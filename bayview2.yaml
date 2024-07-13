@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bayviewimage2
+  labels:
+    app: bayviewimage2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bayviewimage2
+  template:
+    metadata:
+      labels:
+        app: bayviewimage2
+    spec:
+      containers:
+      - name: bayviewimage2
+        image: bayviewacr.azurecr.io/bayviewimage2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bayviewimage2
+spec:
+  selector:
+    app: bayviewimage2
+  type: LoadBalancer
+  ports:
+  - port: 80
